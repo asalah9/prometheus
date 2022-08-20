@@ -47,8 +47,11 @@ jobs:
       - run : 
           name : Get Node-exporter IP 
           command : |
-                aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> /home/circleci/project/inventory
-                cat inventory
+             aws ec2 describe-instances \
+             --query 'Reservations[*].Instances[*].PublicIpAddress' \
+             --filters "Name=tag:Name,Values=exporter" \
+             --output text    >> inventory 
+             cat inventory
 
       - run:
           name: Configure Prometheus Node exporter 
